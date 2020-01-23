@@ -1,0 +1,16 @@
+{
+  "name": "automerge-action-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Instawork/automerge-action-js.git",
+  "author": "rjaguste <rjaguste@instawork.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@actions/core": "^1.2.1",
+    "@actions/github": "^2.0.1"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.21.0"
+  }
+}
