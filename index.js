@@ -1,6 +1,5 @@
 const core = require('@actions/core');
 const { GitHub, context } = require('@actions/github');
-const process = require("process");
 
 function getPullRequestFromContext() {
   if (!context.payload) {
@@ -37,8 +36,6 @@ function pullRequestHasLabel(pullRequestResponseData, labelName) {
 }
 
 const run = async () => {
-  // console.log(JSON.stringify(context, undefined, 2));
-  core.info('Env ', process.env.GITHUB_TOKEN)
 
   const { owner, repo } = context.repo;
   core.debug(`repository: ${owner}/${repo}`);
@@ -51,10 +48,11 @@ const run = async () => {
   core.info(`pull request number: ${pull_number}`);
 
   const token = core.getInput('GITHUB_TOKEN', { require: true });
+  const automergeLabel = core.getInput('AUTOMERGE') != ''core.getInput('AUTOMERGE'): 'automerge';
+  const blockLabel = core.getInput('LABEL') != ''core.getInput('BLOCK'): 'wip';
+  const mergeMethod = core.getInput('MERGE_METHOD') != ''? core.getInput('MERGE_METHOD'):'squash';
   const github = new GitHub(token);
 
-  // Get pull request data
-  // https://octokit.github.io/rest.js/#octokit-routes-pulls-get
   const pullRequestResponse = await github.pulls.get({
     owner,
     repo,
@@ -72,12 +70,12 @@ const run = async () => {
   }
   core.info(`retrieved data for pull request #${pull_number}`);
 
-  if (!pullRequestHasLabel(pullRequestResponseData, 'auto-merge')) {
+  if (!pullRequestHasLabel(pullRequestResponseData, automergeLabel)) {
     core.warning('Pull request does not have the auto-merge label');
     return;
   }
 
-  if (pullRequestHasLabel(pullRequestResponseData, 'work-in-progress')) {
+  if (pullRequestHasLabel(pullRequestResponseData, blockLabel)) {
     core.warning('Pull request has the work-in-progress label');
     return;
   }
@@ -108,7 +106,7 @@ const run = async () => {
       pull_number,
       commit_title,
       commit_message,
-      merge_method: 'squash',
+      merge_method: mergeMethod,
     });
 
     core.info(commit_title);
@@ -120,7 +118,7 @@ const run = async () => {
     }
 
     core.info(pullRequestMergeResponse.data.message); */
-    core.info("Ready to merge",commit_title,commit_message)
+    core.info('Ready to merge',commit_title,commit_message)
 
   } catch (e) {
     // Convert Error to warning so the check status does not fail

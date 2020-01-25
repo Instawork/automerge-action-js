@@ -4,6 +4,15 @@ inputs:
   GITHUB_TOKEN:
     description: 'GitHub token'
     required: true
+  AUTOMERGE:
+    description: 'Automerge label name'
+    required: false
+  MERGE_METHOD:
+    description: 'Method for merging'
+    required: false
+  LABEL:
+    description: 'Label for preventing merge'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
