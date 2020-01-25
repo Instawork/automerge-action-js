@@ -48,8 +48,8 @@ const run = async () => {
   core.info(`pull request number: ${pull_number}`);
 
   const token = core.getInput('GITHUB_TOKEN', { require: true });
-  const automergeLabel = core.getInput('AUTOMERGE') != ''core.getInput('AUTOMERGE'): 'automerge';
-  const blockLabel = core.getInput('LABEL') != ''core.getInput('BLOCK'): 'wip';
+  const automergeLabel = core.getInput('AUTOMERGE') != ''?core.getInput('AUTOMERGE'): 'automerge';
+  const blockLabel = core.getInput('LABEL') != ''?core.getInput('BLOCK'): 'wip';
   const mergeMethod = core.getInput('MERGE_METHOD') != ''? core.getInput('MERGE_METHOD'):'squash';
   const github = new GitHub(token);
 
