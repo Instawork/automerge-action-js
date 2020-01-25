@@ -71,7 +71,8 @@ const run = async () => {
   core.info(`retrieved data for pull request #${pull_number}`);
 
   if (!pullRequestHasLabel(pullRequestResponseData, automergeLabel)) {
-    core.warning('Pull request does not have the auto-merge label');
+    core.info(`label found ${pullRequestResponseData}`);
+    core.warning('Pull request does not have the automerge label');
     return;
   }
 
