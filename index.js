@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const { GitHub, context } = require('@actions/github');
+const process = require("process");
 
 function getPullRequestFromContext() {
   if (!context.payload) {
@@ -37,6 +38,7 @@ function pullRequestHasLabel(pullRequestResponseData, labelName) {
 
 const run = async () => {
   // console.log(JSON.stringify(context, undefined, 2));
+  core.info('Env ', process.env)
 
   const { owner, repo } = context.repo;
   core.debug(`repository: ${owner}/${repo}`);
