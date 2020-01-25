@@ -38,7 +38,7 @@ function pullRequestHasLabel(pullRequestResponseData, labelName) {
 
 const run = async () => {
   // console.log(JSON.stringify(context, undefined, 2));
-  core.info('Env ', process.env)
+  core.info('Env ', process.env.GITHUB_TOKEN)
 
   const { owner, repo } = context.repo;
   core.debug(`repository: ${owner}/${repo}`);
