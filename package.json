@@ -6,6 +6,9 @@
   "author": "rjaguste <rjaguste@instawork.com>",
   "license": "MIT",
   "private": true,
+  "scripts":{
+    "build": "node_modules/.bin/ncc build index.js -m -o dist"
+  },
   "dependencies": {
     "@actions/core": "^1.2.1",
     "@actions/github": "^2.0.1"
