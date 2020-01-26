@@ -1,4 +1,4 @@
-# AutoMerge javascript action
+# Automerge javascript action
 This Action will automerge PR once the PR is labeled 'automerge' and the brach protection rules are satisfied if any
 Read more on JS actions <a href=https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-a-javascript-action>here</a>
 
