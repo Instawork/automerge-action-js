@@ -99,9 +99,8 @@ const run = async () => {
     const commit_title = `${pullRequestResponseData.title} (#${pull_number})`;
     const commit_message = pullRequestResponseData.body.replace(/(## PR Checklist[\w\W\s\S]*)/gm, '').trim();
 
-    // Merge pull request
-    // https://octokit.github.io/rest.js/#octokit-routes-pulls-merge
-    /* const pullRequestMergeResponse = await github.pulls.merge({
+
+     const pullRequestMergeResponse = await github.pulls.merge({
       owner,
       repo,
       pull_number,
@@ -118,12 +117,9 @@ const run = async () => {
       return;
     }
 
-    core.info(pullRequestMergeResponse.data.message); */
-    core.info('Ready to merge',commit_title,commit_message)
+    core.info(pullRequestMergeResponse.data.message);
 
   } catch (e) {
-    // Convert Error to warning so the check status does not fail
-    // TODO: This should be converted to a neutral exit once it is added to @actions/core
     core.warning(e.message);
   }
 };
