@@ -49,9 +49,14 @@ const run = async () => {
 
   const token = core.getInput('GITHUB_TOKEN', { require: true });
   const automergeLabel = core.getInput('AUTOMERGE') != ''?core.getInput('AUTOMERGE'): 'automerge';
-  const blockLabel = core.getInput('LABEL') != ''?core.getInput('BLOCK'): 'wip';
+  const blockLabel = core.getInput('LABEL') != ''?core.getInput('LABEL'): '';
   const mergeMethod = core.getInput('MERGE_METHOD') != ''? core.getInput('MERGE_METHOD'):'squash';
   const github = new GitHub(token);
+
+
+  core.info(`auto merge label is ${automergeLabel}`);
+  core.info(`auto merge label is ${blockLabel}`);
+  core.info(`auto merge label is ${mergeMethod}`);
 
   const pullRequestResponse = await github.pulls.get({
     owner,
@@ -59,11 +64,13 @@ const run = async () => {
     pull_number,
   });
 
+  core.info(JSON.stringify(pullRequestResponse));
+
   const pullRequestResponseStatus = pullRequestResponse.status || undefined;
   const pullRequestResponseData = pullRequestResponse.data || {};
 
-  core.debug(JSON.stringify(pullRequestResponseStatus));
-  core.debug(JSON.stringify(pullRequestResponseData));
+  core.info(JSON.stringify(pullRequestResponseStatus));
+  core.info(JSON.stringify(pullRequestResponseData));
 
   if (pullRequestResponseStatus !== 200 || Object.entries(pullRequestResponseData).length === 0) {
     throw new Error('Could not get pull request information from API');
@@ -81,9 +88,9 @@ const run = async () => {
     return;
   }
 
-  core.debug(`pull request mergeable: ${pullRequestResponseData.mergeable}`);
-  core.debug(`pull request merged: ${pullRequestResponseData.merged}`);
-  core.debug(`pull request state: ${pullRequestResponseData.state}`);
+  core.info(`pull request mergeable: ${pullRequestResponseData.mergeable}`);
+  core.info(`pull request merged: ${pullRequestResponseData.merged}`);
+  core.info(`pull request state: ${pullRequestResponseData.state}`);
   if (
     pullRequestResponseData.state !== 'open'
     || pullRequestResponseData.mergeable !== true
@@ -99,6 +106,12 @@ const run = async () => {
     const commit_title = `${pullRequestResponseData.title} (#${pull_number})`;
     const commit_message = pullRequestResponseData.body.replace(/(## PR Checklist[\w\W\s\S]*)/gm, '').trim();
 
+    core.info(`commit_title is ${commit_title}`);
+    core.info(`commit_message is ${commit_message}`);
+    core.info(`owner is ${owner}`);
+    core.info(`repo is ${repo}`);
+    core.info(`pull_number is ${pull_number}`);
+    core.info(`mergeMethod is ${mergeMethod}`);
 
      const pullRequestMergeResponse = await github.pulls.merge({
       owner,
@@ -109,10 +122,10 @@ const run = async () => {
       merge_method: mergeMethod,
     });
 
-    core.info(commit_title);
-    core.info(commit_message);
 
     if (pullRequestMergeResponse.status !== 200) {
+      core.info(`failed with status`);
+      core.info(pullRequestMergeResponse.status);
       core.warning(pullRequestMergeResponse.data.message);
       return;
     }
