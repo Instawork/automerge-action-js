@@ -10,7 +10,7 @@
     "build": "node_modules/.bin/ncc build index.js -m -o dist"
   },
   "dependencies": {
-    "@actions/core": "^1.2.1",
+    "@actions/core": "^1.9.1",
     "@actions/github": "^2.0.1"
   },
   "devDependencies": {
